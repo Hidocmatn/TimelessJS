@@ -22,7 +22,7 @@ public class TimelessJS
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+//        MinecraftForge.EVENT_BUS.register(this);
     }
 
 //    private void setup(final FMLCommonSetupEvent event)
