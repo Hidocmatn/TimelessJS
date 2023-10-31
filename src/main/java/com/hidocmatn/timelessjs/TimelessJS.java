@@ -1,6 +1,16 @@
 package com.hidocmatn.timelessjs;
 
+import com.hidocmatn.timelessjs.custom.animation.model.GunOverrideModelsJS;
+import com.tac.guns.client.render.gun.ModelOverrides;
+import dev.latvian.kubejs.KubeJSRegistries;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -9,9 +19,11 @@ public class TimelessJS
 {
     public static final String MOD_ID = "timelessjs";
 //    // Directly reference a log4j logger.
-//    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger(TimelessJS.MOD_ID);
 
     public TimelessJS() {
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::onClientSetUp);
 //        // Register the setup method for modloading
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 //        // Register the enqueueIMC method for modloading
@@ -23,6 +35,13 @@ public class TimelessJS
 
         // Register ourselves for server and other game events we are interested in
 //        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void onClientSetUp(FMLClientSetupEvent event) {
+        for (ResourceLocation gunID: GunOverrideModelsJS.CUSTOM_GUN_MAP.keySet()) {
+            Item gunItem = (Item) KubeJSRegistries.items().get(gunID);
+            ModelOverrides.register(gunItem, GunOverrideModelsJS.CUSTOM_GUN_MAP.get(gunID));
+        }
     }
 
 //    private void setup(final FMLCommonSetupEvent event)

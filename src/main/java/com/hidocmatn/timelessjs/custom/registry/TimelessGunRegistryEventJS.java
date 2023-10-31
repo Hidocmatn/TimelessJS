@@ -1,5 +1,7 @@
-package com.hidocmatn.timelessjs.custom;
+package com.hidocmatn.timelessjs.custom.registry;
 
+import com.hidocmatn.timelessjs.custom.animation.model.GunOverrideModelsJS;
+import com.tac.guns.client.render.animation.module.GunAnimationController;
 import dev.latvian.kubejs.KubeJSObjects;
 import dev.latvian.kubejs.event.StartupEventJS;
 
@@ -11,6 +13,8 @@ public class TimelessGunRegistryEventJS extends StartupEventJS {
         TimelessItemBuilder builder = new TimelessItemBuilder(name);
         KubeJSObjects.ITEMS.put(builder.id, builder);
         KubeJSObjects.ALL.add(builder);
+        GunAnimationController.setAnimationControllerMap(builder.id, builder.controller);
+        GunOverrideModelsJS.register(builder.id, builder.overrideModel);
         return builder;
     }
     public void create(String name, Consumer<TimelessItemBuilder> callback) {
@@ -18,5 +22,6 @@ public class TimelessGunRegistryEventJS extends StartupEventJS {
         callback.accept(builder);
         KubeJSObjects.ITEMS.put(builder.id, builder);
         KubeJSObjects.ALL.add(builder);
+        GunAnimationController.setAnimationControllerMap(builder.id, builder.controller);
     }
 }

@@ -1,4 +1,4 @@
-package com.hidocmatn.timelessjs.custom;
+package com.hidocmatn.timelessjs.custom.registry;
 
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 

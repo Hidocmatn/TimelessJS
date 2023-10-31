@@ -1,4 +1,4 @@
-package com.hidocmatn.timelessjs.custom;
+package com.hidocmatn.timelessjs.custom.registry;
 
 import dev.latvian.kubejs.item.ItemBuilder;
 import dev.latvian.kubejs.item.custom.ItemType;
