@@ -54,6 +54,9 @@ public class GunStatusHelper {
     public static ItemStack getStockAttachment(ItemStack stack) {
         return getAttachment(IAttachment.Type.STOCK, stack);
     }
+    public static ItemStack getScopeAttachment(ItemStack stack) {
+        return getAttachment(IAttachment.Type.SCOPE, stack);
+    }
     public static boolean isExtendedMagazineInstalled(ItemStack stack) {
         return (GunModifierHelper.getAmmoCapacity(stack) > -1);
     }

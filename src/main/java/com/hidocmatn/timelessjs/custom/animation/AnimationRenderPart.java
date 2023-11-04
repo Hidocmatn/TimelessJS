@@ -12,8 +12,6 @@ public class AnimationRenderPart {
     public int index;
     public double offset;
     public AnimationPartType partType;
-    public ResourceLocation modelToRender;
-    public IBakedModel cachedModel;
     public boolean isPartEmissive;
     public int light;
     public boolean useCustomRenderMethod;
@@ -24,13 +22,6 @@ public class AnimationRenderPart {
         this.partType = partType;
         this.offset = 0;
         this.useCustomRenderMethod = false;
-    }
-    public AnimationRenderPart setModelToRender(ResourceLocation model) {
-        this.modelToRender = model;
-        return this;
-    }
-    public AnimationRenderPart setModelToRender(String modelPath) {
-        return this.setModelToRender(new ResourceLocation(modelPath));
     }
     public AnimationRenderPart isEmissive(boolean flag) {
         this.isPartEmissive = flag;
@@ -44,17 +35,6 @@ public class AnimationRenderPart {
     public AnimationRenderPart useCustomRenderMethod(boolean flag) {
         this.useCustomRenderMethod = flag;
         return this;
-    }
-
-    public IBakedModel getSpecialModel() {
-        if (this.cachedModel == null) {
-            IBakedModel model = Minecraft.getInstance().getModelManager().getModel(this.modelToRender);
-            if (model == Minecraft.getInstance().getModelManager().getMissingModel()) {
-                return model;
-            }
-            this.cachedModel = model;
-        }
-        return this.cachedModel;
     }
 
     public AnimationRenderPart customRenderMethod(Consumer<GunRenderBuilder> renderMethod) {

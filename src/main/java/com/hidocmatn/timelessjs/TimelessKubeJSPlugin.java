@@ -1,6 +1,8 @@
 package com.hidocmatn.timelessjs;
 
 import com.hidocmatn.timelessjs.custom.animation.AnimationPartType;
+import com.hidocmatn.timelessjs.custom.animation.AnimationType;
+import com.hidocmatn.timelessjs.custom.animation.lib.IBakedModelRegistryEventJS;
 import com.hidocmatn.timelessjs.custom.registry.TimelessGunRegistryEventJS;
 import com.hidocmatn.timelessjs.recipe.TimelessRecipeJS;
 import dev.latvian.kubejs.KubeJSPlugin;
@@ -13,6 +15,7 @@ public class TimelessKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void initStartup() {
         new TimelessGunRegistryEventJS().post("gun.registry");
+        new IBakedModelRegistryEventJS().post("ibakedmodel.registry");
     }
     @Override
     public void addRecipes(RegisterRecipeHandlersEvent event) {
@@ -20,15 +23,18 @@ public class TimelessKubeJSPlugin extends KubeJSPlugin {
     }
     @Override
     public void addBindings(BindingsEvent event) {
-        event.add("ANIM_PART_BODY", AnimationPartType.BODY);
-        event.add("ANIM_PART_CAPS", AnimationPartType.CAPS);
-        event.add("ANIM_PART_BOLT", AnimationPartType.BOLT);
-        event.add("ANIM_PART_PUMP", AnimationPartType.PUMP);
-        event.add("ANIM_PART_LEFT_HAND", AnimationPartType.LEFT_HAND);
-        event.add("ANIM_PART_RIGHT_HAND", AnimationPartType.RIGHT_HAND);
-        event.add("ANIM_PART_MAGAZINE", AnimationPartType.MAGAZINE);
-        event.add("ANIM_PART_BULLET", AnimationPartType.BULLET);
-        event.add("ANIM_PART_CHAIN", AnimationPartType.CHAIN);
-        event.add("ANIM_PART_CUSTOM", AnimationPartType.CUSTOM);
+        event.add("AnimationType", AnimationType.class);
+        event.add("AnimationPartType", AnimationPartType.class);
+//        event.add("ANIM_PART_BODY", AnimationPartType.BODY);
+//        event.add("ANIM_PART_CAPS", AnimationPartType.CAPS);
+//        event.add("ANIM_PART_BOLT", AnimationPartType.BOLT);
+//        event.add("ANIM_PART_SLIDE", AnimationPartType.SLIDE);
+//        event.add("ANIM_PART_PUMP", AnimationPartType.PUMP);
+//        event.add("ANIM_PART_LEFT_HAND", AnimationPartType.LEFT_HAND);
+//        event.add("ANIM_PART_RIGHT_HAND", AnimationPartType.RIGHT_HAND);
+//        event.add("ANIM_PART_MAGAZINE", AnimationPartType.MAGAZINE);
+//        event.add("ANIM_PART_BULLET", AnimationPartType.BULLET);
+//        event.add("ANIM_PART_CHAIN", AnimationPartType.CHAIN);
+//        event.add("ANIM_PART_CUSTOM", AnimationPartType.CUSTOM);
     }
 }

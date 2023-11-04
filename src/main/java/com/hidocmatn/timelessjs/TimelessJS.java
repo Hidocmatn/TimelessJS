@@ -1,11 +1,19 @@
 package com.hidocmatn.timelessjs;
 
+import com.hidocmatn.timelessjs.custom.animation.AnimationLoader;
+import com.hidocmatn.timelessjs.custom.animation.controller.CustomController;
+import com.hidocmatn.timelessjs.custom.animation.lib.IBakedModelsJS;
 import com.hidocmatn.timelessjs.custom.animation.model.GunOverrideModelsJS;
 import com.tac.guns.client.render.gun.ModelOverrides;
 import dev.latvian.kubejs.KubeJSRegistries;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -24,6 +32,7 @@ public class TimelessJS
     public TimelessJS() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::onClientSetUp);
+        bus.addListener(this::register);
 //        // Register the setup method for modloading
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 //        // Register the enqueueIMC method for modloading
@@ -41,6 +50,14 @@ public class TimelessJS
         for (ResourceLocation gunID: GunOverrideModelsJS.CUSTOM_GUN_MAP.keySet()) {
             Item gunItem = (Item) KubeJSRegistries.items().get(gunID);
             ModelOverrides.register(gunItem, GunOverrideModelsJS.CUSTOM_GUN_MAP.get(gunID));
+        }
+        AnimationLoader.tryLoading();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void register(ModelRegistryEvent event) {
+        for (ResourceLocation modelPath : IBakedModelsJS.MODEL_REGISTER_MAP.values()) {
+            ModelLoader.addSpecialModel(modelPath);
         }
     }
 

@@ -1,9 +1,11 @@
 package com.hidocmatn.timelessjs.custom.animation.model;
 
+import com.hidocmatn.timelessjs.custom.animation.AnimationPartType;
 import com.hidocmatn.timelessjs.custom.animation.AnimationRenderPart;
 import com.hidocmatn.timelessjs.custom.animation.lib.GunRenderBuilder;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
+import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.IOverrideModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -21,17 +23,20 @@ public class GunOverrideModelJS implements IOverrideModel {
         this.id = modelID;
     }
     @Override
-    public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack itemStack, ItemStack itemStack1, LivingEntity livingEntity, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
+    public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack itemStack, ItemStack parent, LivingEntity livingEntity, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int light, int overlay) {
         GunAnimationController controller = GunAnimationController.fromRegistryName(ResourceLocation.tryParse("kubejs:" + this.id));
         GunRenderBuilder renderBuilder = new GunRenderBuilder(controller, transformType, itemStack, matrixStack, iRenderTypeBuffer, light, overlay);
         for(AnimationRenderPart part: partSet) {
             renderPart(part, renderBuilder);
         }
+        PlayerHandAnimation.render(controller, transformType, matrixStack, iRenderTypeBuffer, light);
     }
     public void renderPart(AnimationRenderPart part, GunRenderBuilder renderBuilder) {
-        if(part.useCustomRenderMethod) {
-            part.customRenderMethod.accept(renderBuilder);
+        if(part.partType != AnimationPartType.RIGHT_HAND && part.partType != AnimationPartType.LEFT_HAND) {
+            if(part.useCustomRenderMethod) {
+                part.customRenderMethod.accept(renderBuilder);
+            }
+            else {}
         }
-        else {}
     }
 }

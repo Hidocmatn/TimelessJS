@@ -4,6 +4,7 @@ public enum AnimationPartType {
     BODY,
     CAPS,
     BOLT,
+    SLIDE,
     PUMP,
     LEFT_HAND,
     RIGHT_HAND,

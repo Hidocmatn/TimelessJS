@@ -3,19 +3,21 @@ package com.hidocmatn.timelessjs.custom.animation.controller;
 import com.hidocmatn.timelessjs.TimelessJS;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.Animations;
-import com.tac.guns.client.render.animation.module.GunAnimationController;
+import com.tac.guns.client.render.animation.module.PistalAnimationController;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GunAnimationControllerJS extends GunAnimationController implements CustomController{
+public class PistolAnimationControllerJS extends PistalAnimationController implements CustomController{
     public Map<String, Integer> partIndexMap = new HashMap<>();
     public Map<AnimationLabel, AnimationMeta> animationMetaMap = new HashMap<>();
     public String id;
-    public GunAnimationControllerJS(String controllerID) {
+    public PistolAnimationControllerJS(String controllerID) {
         this.id = controllerID;
         this.partIndexMap.put("body", 0);
+        this.partIndexMap.put("slide", 0);
+        this.partIndexMap.put("magazine", 0);
         this.partIndexMap.put("left_hand", 0);
         this.partIndexMap.put("right_hand", 0);
     }
@@ -23,19 +25,28 @@ public class GunAnimationControllerJS extends GunAnimationController implements 
     public AnimationMeta getAnimationFromLabel(AnimationLabel animationLabel) {
         return animationMetaMap.get(animationLabel);
     }
+    @Override
+    public int getSlideNodeIndex() {
+        return partIndexMap.get("slide");
+    }
 
     @Override
-    public int getAttachmentsNodeIndex() {
+    public int getMagazineNodeIndex() {
+        return partIndexMap.get("magazine");
+    }
+
+    @Override
+    protected int getAttachmentsNodeIndex() {
         return partIndexMap.get("body");
     }
 
     @Override
-    public int getRightHandNodeIndex() {
+    protected int getRightHandNodeIndex() {
         return partIndexMap.get("right_hand");
     }
 
     @Override
-    public int getLeftHandNodeIndex() {
+    protected int getLeftHandNodeIndex() {
         return partIndexMap.get("left_hand");
     }
 
@@ -48,7 +59,9 @@ public class GunAnimationControllerJS extends GunAnimationController implements 
                 TimelessJS.LOGGER.fatal(e.getStackTrace());
             }
         }
-        enableStaticState();
+        if (!animationMetaMap.isEmpty()) {
+            enableStaticState();
+        }
     }
 
     @Override
