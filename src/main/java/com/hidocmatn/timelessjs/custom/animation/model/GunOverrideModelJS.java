@@ -4,14 +4,17 @@ import com.hidocmatn.timelessjs.custom.animation.AnimationPartType;
 import com.hidocmatn.timelessjs.custom.animation.AnimationRenderPart;
 import com.hidocmatn.timelessjs.custom.animation.lib.GunRenderBuilder;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.tac.guns.client.handler.GunRenderingHandler;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.IOverrideModel;
+import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.HashSet;
 import java.util.Set;

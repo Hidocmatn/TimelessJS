@@ -1,24 +1,17 @@
 package com.hidocmatn.timelessjs.custom.registry;
 
+import com.hidocmatn.timelessjs.TimelessJSObjects;
 import dev.latvian.kubejs.item.ItemBuilder;
 import dev.latvian.kubejs.item.custom.ItemType;
 import net.minecraft.item.Item;
-
-public class TimelessGunItemType extends ItemType {
+public class TimelessGunItemType{
+    public final String name;
     public TimelessGunItemType(String n) {
-        super(n);
+        this.name = n;
     }
+
     public static final TimelessGunItemType INSTANCE = new TimelessGunItemType("gun");
-    @Override
-    public Item createItem(ItemBuilder itemBuilder) {
-        if (itemBuilder instanceof TimelessItemBuilder) {
-            return new TimelessGunItemJS((TimelessItemBuilder)itemBuilder);
-        }
-        return null;
-    }
-    @Override
-    public void applyDefaults(ItemBuilder builder) {
-        super.applyDefaults(builder);
-        builder.unstackable();
+    public Item createItem(TimelessItemBuilder itemBuilder) {
+        return new TimelessGunItemJS(itemBuilder);
     }
 }

@@ -4,6 +4,6 @@ import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 
 public class TimelessGunItemJS extends TimelessGunItem {
     public TimelessGunItemJS(TimelessItemBuilder builder) {
-        super((properties) -> {return builder.createItemProperties();}, builder.createIGunModifier());
+        super((properties) -> {return builder.applyProperties(properties);}, builder.createIGunModifier());
     }
 }

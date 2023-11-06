@@ -63,7 +63,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magn
 [[dependencies.timelessjs]]
     modId="tac"
     mandatory=true
-    versionRange="[0.3.8,0.3.9)"
+    versionRange="[0.3.8,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.timelessjs]]

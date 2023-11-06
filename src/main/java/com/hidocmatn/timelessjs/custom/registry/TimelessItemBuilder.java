@@ -11,12 +11,18 @@ import com.hidocmatn.timelessjs.custom.animation.model.GunOverrideModelJS;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.interfaces.IGunModifier;
+import dev.latvian.kubejs.KubeJS;
 import dev.latvian.kubejs.item.ItemBuilder;
+import dev.latvian.kubejs.util.BuilderBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.function.Consumer;
 
-public class TimelessItemBuilder extends ItemBuilder {
+public class TimelessItemBuilder extends BuilderBase {
+    public TimelessGunItemType type;
+    public transient ItemGroup group;
     public GunAnimationController controller;
     public GunOverrideModelJS overrideModel;
     public AnimationType animationType;
@@ -25,6 +31,7 @@ public class TimelessItemBuilder extends ItemBuilder {
     public transient double additionalGravity;
     public TimelessItemBuilder(String i, AnimationType animationType) {
         super(i);
+        this.group = KubeJS.tab;
         this.animationType = animationType;
         setAnimationController(i, animationType);
         this.overrideModel = new GunOverrideModelJS(i);
@@ -32,6 +39,10 @@ public class TimelessItemBuilder extends ItemBuilder {
         radiusMultiplier = 1.0;
         speedMultiplier = 1.0;
         additionalGravity = 0.0;
+    }
+    @Override
+    public String getBuilderType() {
+        return "gun";
     }
     public void setAnimationController(String i, AnimationType type) {
         switch (type) {
@@ -84,5 +95,10 @@ public class TimelessItemBuilder extends ItemBuilder {
         ResourceLocation location = new ResourceLocation(animPath);
         GunAnimationController.AnimationLabel animLabel = AnimationLabelJS.getLabelFromName(label);
         return addAnimation(animLabel, location);
+    }
+
+    public Item.Properties applyProperties(Item.Properties properties) {
+        properties.tab(this.group);
+        return properties;
     }
 }

@@ -23,7 +23,10 @@ public class PistolAnimationControllerJS extends PistalAnimationController imple
     }
     @Override
     public AnimationMeta getAnimationFromLabel(AnimationLabel animationLabel) {
-        return animationMetaMap.get(animationLabel);
+        if (animationMetaMap.containsKey(animationLabel)) {
+            return animationMetaMap.get(animationLabel);
+        }
+        else return null;
     }
     @Override
     public int getSlideNodeIndex() {
@@ -59,7 +62,7 @@ public class PistolAnimationControllerJS extends PistalAnimationController imple
                 TimelessJS.LOGGER.fatal(e.getStackTrace());
             }
         }
-        if (!animationMetaMap.isEmpty()) {
+        if (animationMetaMap.containsKey(AnimationLabel.STATIC)) {
             enableStaticState();
         }
     }

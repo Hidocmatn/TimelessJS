@@ -21,7 +21,10 @@ public class GunAnimationControllerJS extends GunAnimationController implements 
     }
     @Override
     public AnimationMeta getAnimationFromLabel(AnimationLabel animationLabel) {
-        return animationMetaMap.get(animationLabel);
+        if (animationMetaMap.containsKey(animationLabel)) {
+            return animationMetaMap.get(animationLabel);
+        }
+        else return null;
     }
 
     @Override

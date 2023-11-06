@@ -1,9 +1,9 @@
 package com.hidocmatn.timelessjs;
 
 import com.hidocmatn.timelessjs.custom.animation.AnimationLoader;
-import com.hidocmatn.timelessjs.custom.animation.controller.CustomController;
 import com.hidocmatn.timelessjs.custom.animation.lib.IBakedModelsJS;
 import com.hidocmatn.timelessjs.custom.animation.model.GunOverrideModelsJS;
+import com.hidocmatn.timelessjs.custom.registry.TimelessGunItemJS;
 import com.tac.guns.client.render.gun.ModelOverrides;
 import dev.latvian.kubejs.KubeJSRegistries;
 import net.minecraft.item.Item;
@@ -12,8 +12,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,6 +33,7 @@ public class TimelessJS
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::onClientSetUp);
         bus.addListener(this::register);
+        bus.addGenericListener(Item.class, this::registerGun);
 //        // Register the setup method for modloading
 //        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 //        // Register the enqueueIMC method for modloading
@@ -46,6 +47,14 @@ public class TimelessJS
 //        MinecraftForge.EVENT_BUS.register(this);
     }
 
+    private void registerGun(final RegistryEvent.Register<Item> event) {
+        TimelessJSObjects.GUNS.forEach((id, builder) -> {
+            Item gunItemJS = builder.type.createItem(builder);
+            gunItemJS.setRegistryName(builder.id);
+            event.getRegistry().register(gunItemJS);
+        });
+    }
+
     private void onClientSetUp(FMLClientSetupEvent event) {
         for (ResourceLocation gunID: GunOverrideModelsJS.CUSTOM_GUN_MAP.keySet()) {
             Item gunItem = (Item) KubeJSRegistries.items().get(gunID);
@@ -55,7 +64,7 @@ public class TimelessJS
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void register(ModelRegistryEvent event) {
+    private void register(ModelRegistryEvent event) {
         for (ResourceLocation modelPath : IBakedModelsJS.MODEL_REGISTER_MAP.values()) {
             ModelLoader.addSpecialModel(modelPath);
         }
