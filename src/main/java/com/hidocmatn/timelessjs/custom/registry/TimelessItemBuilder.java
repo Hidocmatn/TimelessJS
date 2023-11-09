@@ -1,9 +1,11 @@
 package com.hidocmatn.timelessjs.custom.registry;
 
 import com.hidocmatn.timelessjs.custom.animation.AnimationLabelJS;
-import com.hidocmatn.timelessjs.custom.animation.AnimationPartType;
-import com.hidocmatn.timelessjs.custom.animation.AnimationRenderPart;
+import com.hidocmatn.timelessjs.custom.animation.part.AnimationPartType;
+import com.hidocmatn.timelessjs.custom.animation.part.AnimationRenderPart;
+import com.hidocmatn.timelessjs.custom.animation.part.FunctionalAnimationRenderPart;
 import com.hidocmatn.timelessjs.custom.animation.AnimationType;
+import com.hidocmatn.timelessjs.custom.animation.controller.BoltActionAnimationControllerJS;
 import com.hidocmatn.timelessjs.custom.animation.controller.CustomController;
 import com.hidocmatn.timelessjs.custom.animation.controller.GunAnimationControllerJS;
 import com.hidocmatn.timelessjs.custom.animation.controller.PistolAnimationControllerJS;
@@ -12,7 +14,6 @@ import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.interfaces.IGunModifier;
 import dev.latvian.kubejs.KubeJS;
-import dev.latvian.kubejs.item.ItemBuilder;
 import dev.latvian.kubejs.util.BuilderBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -26,9 +27,11 @@ public class TimelessItemBuilder extends BuilderBase {
     public GunAnimationController controller;
     public GunOverrideModelJS overrideModel;
     public AnimationType animationType;
-    public transient double radiusMultiplier;
-    public transient double speedMultiplier;
-    public transient double additionalGravity;
+    public double radiusMultiplier;
+    public double speedMultiplier;
+    public double additionalGravity;
+    public String parentModel;
+    public int maxDamage;
     public TimelessItemBuilder(String i, AnimationType animationType) {
         super(i);
         this.group = KubeJS.tab;
@@ -36,19 +39,30 @@ public class TimelessItemBuilder extends BuilderBase {
         setAnimationController(i, animationType);
         this.overrideModel = new GunOverrideModelJS(i);
         this.type = TimelessGunItemType.INSTANCE;
+        this.parentModel = "kubejs:gun/default";
+        this.maxDamage = 0;
         radiusMultiplier = 1.0;
         speedMultiplier = 1.0;
         additionalGravity = 0.0;
     }
     @Override
     public String getBuilderType() {
-        return "gun";
+        return "item";
     }
     public void setAnimationController(String i, AnimationType type) {
         switch (type) {
             case BASIC: this.controller = new GunAnimationControllerJS(i);
             case PISTOL: this.controller = new PistolAnimationControllerJS(i);
+            case BOLT_ACTION: this.controller = new BoltActionAnimationControllerJS(i);
         }
+    }
+    public TimelessItemBuilder maxDamage(int durability) {
+        this.maxDamage = durability;
+        return this;
+    }
+    public TimelessItemBuilder parentModel(String modelPath) {
+        this.parentModel = modelPath;
+        return this;
     }
     public TimelessItemBuilder setFireSoundRadiusMultiplier(double multiplier) {
         this.radiusMultiplier = multiplier;
@@ -79,9 +93,10 @@ public class TimelessItemBuilder extends BuilderBase {
         };
         return modifier;
     }
-    public TimelessItemBuilder addRenderPart(String partName, int partIndex, AnimationPartType partType, Consumer<AnimationRenderPart> part) {
-        AnimationRenderPart renderPart = new AnimationRenderPart(partName, partIndex, partType);
-        part.accept(renderPart);
+    public TimelessItemBuilder addRenderPart(String partName, int partIndex, AnimationPartType partType, Consumer<AnimationRenderPart> callback) {
+        AnimationRenderPart renderPart = AnimationPartType.getPartByType(partName, partIndex, partType);
+        renderPart.setGun(this.id.getPath());
+        callback.accept(renderPart);
         this.overrideModel.partSet.add(renderPart);
         ((CustomController)this.controller).registerPart(partName, partIndex);
         return this;
@@ -99,6 +114,9 @@ public class TimelessItemBuilder extends BuilderBase {
 
     public Item.Properties applyProperties(Item.Properties properties) {
         properties.tab(this.group);
+        if (this.maxDamage > 0) {
+            properties.durability(maxDamage);
+        }
         return properties;
     }
 }

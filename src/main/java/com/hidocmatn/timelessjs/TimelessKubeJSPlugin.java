@@ -1,11 +1,13 @@
 package com.hidocmatn.timelessjs;
 
-import com.hidocmatn.timelessjs.custom.animation.AnimationPartType;
+import com.hidocmatn.timelessjs.custom.animation.part.AnimationPartType;
 import com.hidocmatn.timelessjs.custom.animation.AnimationType;
-import com.hidocmatn.timelessjs.custom.animation.lib.IBakedModelRegistryEventJS;
+import com.hidocmatn.timelessjs.custom.animation.model.IBakedModelRegistryEventJS;
 import com.hidocmatn.timelessjs.custom.registry.TimelessGunRegistryEventJS;
+import com.hidocmatn.timelessjs.custom.registry.TimelessItemBuilder;
 import com.hidocmatn.timelessjs.recipe.TimelessRecipeJS;
 import dev.latvian.kubejs.KubeJSPlugin;
+import dev.latvian.kubejs.generator.AssetJsonGenerator;
 import dev.latvian.kubejs.recipe.RegisterRecipeHandlersEvent;
 import dev.latvian.kubejs.script.BindingsEvent;
 
@@ -36,5 +38,11 @@ public class TimelessKubeJSPlugin extends KubeJSPlugin {
 //        event.add("ANIM_PART_BULLET", AnimationPartType.BULLET);
 //        event.add("ANIM_PART_CHAIN", AnimationPartType.CHAIN);
 //        event.add("ANIM_PART_CUSTOM", AnimationPartType.CUSTOM);
+    }
+
+    public void generateAssetJsons(AssetJsonGenerator generator) {
+        for (TimelessItemBuilder builder: TimelessJSObjects.GUNS.values()) {
+            builder.type.generateAssets(builder, generator);
+        }
     }
 }

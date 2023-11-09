@@ -24,9 +24,17 @@ public class GunStatusHelper {
     public static boolean hasAmmo(ItemStack stack) {
         return Gun.hasAmmo(stack);
     }
+    public static CompoundNBT getNBT(ItemStack stack) {
+        CompoundNBT tag = stack.getOrCreateTag();
+        return tag;
+    }
     public static int getAmmoCount(ItemStack stack) {
-            CompoundNBT tag = stack.getOrCreateTag();
-            return tag.getInt("AmmoCount");
+        CompoundNBT tag = stack.getOrCreateTag();
+        return tag.getInt("AmmoCount");
+    }
+    public static int getCurrentFireMode(ItemStack stack) {
+        CompoundNBT tag = stack.getOrCreateTag();
+        return tag.getInt("CurrentFireMode");
     }
     public static int getAmmoCapacityCount(ItemStack stack) {
         return GunModifierHelper.getAmmoCapacity(stack, getModifiedGunFromItem(stack));

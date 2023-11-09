@@ -1,4 +1,4 @@
-package com.hidocmatn.timelessjs.custom.animation.lib;
+package com.hidocmatn.timelessjs.custom.animation.model;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;

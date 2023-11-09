@@ -39,17 +39,17 @@ public class PistolAnimationControllerJS extends PistalAnimationController imple
     }
 
     @Override
-    protected int getAttachmentsNodeIndex() {
+    public int getAttachmentsNodeIndex() {
         return partIndexMap.get("body");
     }
 
     @Override
-    protected int getRightHandNodeIndex() {
+    public int getRightHandNodeIndex() {
         return partIndexMap.get("right_hand");
     }
 
     @Override
-    protected int getLeftHandNodeIndex() {
+    public int getLeftHandNodeIndex() {
         return partIndexMap.get("left_hand");
     }
 

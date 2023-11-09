@@ -1,4 +1,4 @@
-package com.hidocmatn.timelessjs.custom.animation.lib;
+package com.hidocmatn.timelessjs.custom.animation.model;
 
 import dev.latvian.kubejs.event.StartupEventJS;
 
